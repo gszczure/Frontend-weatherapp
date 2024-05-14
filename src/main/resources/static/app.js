@@ -56,7 +56,7 @@ function getWeatherIcon(weatherCode) {
         case 2:
             return '<i class="fas fa-cloud-sun fa-2xl" style="color: #ffffff;"></i>'; // Mainly clear, partly cloudy, and overcast
         case 3:
-            return <i className="fa-solid fa-cloud fa-2xl"></i>
+            return '<i className="fa-solid fa-cloud fa-2xl" style="color: #808080"></i>'
         case 45:
         case 48:
             return '<i class="fas fa-smog fa-2xl" style="color: #ffffff;"></i>'; // Fog and depositing rime fog
@@ -66,7 +66,7 @@ function getWeatherIcon(weatherCode) {
             return '<i class="fas fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>'; // Drizzle
         case 61:
         case 63:
-            return <i className="fa-solid fa-cloud-rain fa-2xl"></i>
+            return '<i className="fa-solid fa-cloud-rain fa-2xl"style="color: #4a90e2;"></i>'
         case 65:
             return '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>'; // Rain
         case 66:
