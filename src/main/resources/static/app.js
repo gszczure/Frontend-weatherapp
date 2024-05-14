@@ -54,7 +54,7 @@ function getWeatherIcon(weatherCode) {
             return '<i class="fas fa-sun fa-2xl" style="color: #FFD43B;"></i>'; // Clear sky
         case 1:
         case 2:
-            return '<i class="fas fa-cloud-sun fa-2xl" style="color: #ffffff;"></i>'; // Mainly clear, partly cloudy, and overcast
+            return '<i class="fas fa-cloud-sun fa-2xl" style="color: #a88322;"></i>'; // Mainly clear, partly cloudy, and overcast
         case 3:
             return '<i class="fa-solid fa-cloud fa-2xl" style="color: #808080"></i>'
         case 45:
