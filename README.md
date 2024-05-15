@@ -1,6 +1,6 @@
 # Frontend-weatherapp
 
-Repozytorium "Frontend-weatherapp" zawiera kod frontendu aplikacji weatherapp, dostępny pod adresem https://frontend-weatherapp.onrender.com która wyświetla dane pogodowe na mapie oraz informacje o generowanej energii słonecznej.
+Repozytorium "Frontend-weatherapp" zawiera kod frontendu aplikacji weatherapp, dostępny pod adresem https://frontend-weatherapp.onrender.com ,który wyświetla dane pogodowe na mapie oraz informacje o generowanej energii słonecznej.
 
 ## Kod zrodlowy
 * **Aktualizacja danych:** 
