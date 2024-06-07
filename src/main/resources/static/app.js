@@ -20,15 +20,22 @@ navigator.geolocation.getCurrentPosition(function(position) {
     marker.setLatLng([latitude, longitude]);
     map.setView([latitude, longitude], 13);
     updateWeatherData(latitude, longitude);
-});
+}, handleGeolocationError);
 
 function updateWeatherData(latitude, longitude) {
-    fetch(`https://backend-weatherapp.onrender.com/weather?latitude=${latitude}&longitude=${longitude}`)
-        .then(response => response.json())
-        .then(data => {
-            displayWeatherData(data);
-        })
+    fetchWeatherData(latitude, longitude)
+        .then(data => displayWeatherData(data))
         .catch(error => console.error('Error:', error));
+}
+
+function fetchWeatherData(latitude, longitude) {
+    return fetch(`https://backend-weatherapp.onrender.com/weather?latitude=${latitude}&longitude=${longitude}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        });
 }
 
 function displayWeatherData(data) {
@@ -38,57 +45,49 @@ function displayWeatherData(data) {
     data.forEach(entry => {
         const row = document.createElement('tr');
         row.innerHTML = `
-                <td>${entry.date}</td>
-                <td>${entry.max_temperature_C}</td>
-                <td>${entry.min_temperature_C}</td>
-                <td>${entry.generated_energy_kWh}</td>
-                <td>${getWeatherIcon(entry.weather_code)}</td>
-            `;
+            <td>${entry.date}</td>
+            <td>${entry.maxTemperature}</td>
+            <td>${entry.minTemperature}</td>
+            <td>${entry.generatedEnergy}</td>
+            <td>${getWeatherIcon(entry.weatherCode)}</td>
+        `;
         weatherDataElement.appendChild(row);
     });
 }
 
 function getWeatherIcon(weatherCode) {
-    switch (weatherCode) {
-        case 0:
-            return '<i class="fas fa-sun fa-2xl" style="color: #FFD43B;"></i>'; // Clear sky
-        case 1:
-        case 2:
-            return '<i class="fas fa-cloud-sun fa-2xl" style="color: #a88322;"></i>'; // Mainly clear, partly cloudy, and overcast
-        case 3:
-            return '<i class="fa-solid fa-cloud fa-2xl" style="color: #808080"></i>'
-        case 45:
-        case 48:
-            return '<i class="fas fa-smog fa-2xl" style="color: #ffffff;"></i>'; // Fog and depositing rime fog
-        case 51:
-        case 53:
-        case 55:
-            return '<i class="fas fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>'; // Drizzle
-        case 61:
-        case 63:
-            return '<i class="fa-solid fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>'
-        case 65:
-            return '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>'; // Rain
-        case 66:
-        case 67:
-            return '<i class="fas fa-cloud-sleet fa-2xl" style="color: #4a90e2;"></i>'; // Freezing Rain
-        case 71:
-        case 73:
-        case 75:
-        case 77:
-            return '<i class="fas fa-snowflake fa-2xl" style="color: #fff;"></i>'; // Snow fall, Snow grains
-        case 80:
-        case 81:
-        case 82:
-            return '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>'; // Rain showers
-        case 85:
-        case 86:
-            return '<i class="fas fa-snowflakes fa-2xl" style="color: #fff;"></i>'; // Snow showers
-        case 95:
-        case 96:
-        case 99:
-            return '<i class="fas fa-bolt fa-2xl" style="color: #ffd700;"></i>'; // Thunderstorm, Thunderstorm with hail
-        default:
-            return '<i class="fas fa-question fa-2xl" style="color: #000;"></i>'; // Default
-    }
+    const weatherIcons = {
+        0: '<i class="fas fa-sun fa-2xl" style="color: #FFD43B;"></i>',
+        1: '<i class="fas fa-cloud-sun fa-2xl" style="color: #a88322;"></i>',
+        2: '<i class="fas fa-cloud-sun fa-2xl" style="color: #a88322;"></i>',
+        3: '<i class="fa-solid fa-cloud fa-2xl" style="color: #808080"></i>',
+        45: '<i class="fas fa-smog fa-2xl" style="color: #ffffff;"></i>',
+        48: '<i class="fas fa-smog fa-2xl" style="color: #ffffff;"></i>',
+        51: '<i class="fas fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>',
+        53: '<i class="fas fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>',
+        55: '<i class="fas fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>',
+        61: '<i class="fa-solid fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>',
+        63: '<i class="fa-solid fa-cloud-rain fa-2xl" style="color: #4a90e2;"></i>',
+        65: '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>',
+        66: '<i class="fas fa-cloud-sleet fa-2xl" style="color: #4a90e2;"></i>',
+        67: '<i class="fas fa-cloud-sleet fa-2xl" style="color: #4a90e2;"></i>',
+        71: '<i class="fas fa-snowflake fa-2xl" style="color: #fff;"></i>',
+        73: '<i class="fas fa-snowflake fa-2xl" style="color: #fff;"></i>',
+        75: '<i class="fas fa-snowflake fa-2xl" style="color: #fff;"></i>',
+        77: '<i class="fas fa-snowflake fa-2xl" style="color: #fff;"></i>',
+        80: '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>',
+        81: '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>',
+        82: '<i class="fas fa-cloud-showers-heavy fa-2xl" style="color: #4a90e2;"></i>',
+        85: '<i class="fas fa-snowflakes fa-2xl" style="color: #fff;"></i>',
+        86: '<i class="fas fa-snowflakes fa-2xl" style="color: #fff;"></i>',
+        95: '<i class="fas fa-bolt fa-2xl" style="color: #ffd700;"></i>',
+        96: '<i class="fas fa-bolt fa-2xl" style="color: #ffd700;"></i>',
+        99: '<i class="fas fa-bolt fa-2xl" style="color: #ffd700;"></i>',
+        default: '<i class="fas fa-question fa-2xl" style="color: #000;"></i>'
+    };
+    return weatherIcons[weatherCode] || weatherIcons.default;
+}
+
+function handleGeolocationError(error) {
+    console.error('Geolocation error:', error);
 }
